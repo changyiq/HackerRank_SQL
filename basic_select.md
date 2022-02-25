@@ -201,6 +201,12 @@ where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 **Solution**
 ```sql
+SELECT DISTINCT city FROM station
+WHERE SUBSTR(city, LENGTH(city), 1) NOT IN ('a', 'e', 'i', 'o', 'u');
+```
+
+**other's Solution**
+```sql
 SELECT DISTINCT CITY FROM STATION WHERE UPPER(SUBSTR(CITY, LENGTH(CITY), 1)) NOT IN ('A','E','I','O','U') AND LOWER(SUBSTR(CITY, LENGTH(CITY),1)) NOT IN ('a','e','i','o','u');    
 ```
 
@@ -223,6 +229,12 @@ The STATION table is described as follows:
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 **Solution**
+```sql
+SELECT DISTINCT city FROM station
+WHERE UPPER(SUBSTR(city, 1, 1)) NOT IN ('A', 'E', 'I', 'O', 'U')
+OR LOWER(SUBSTR(city,-1)) NOT IN ('a', 'e', 'i', 'o', 'u');
+```
+**Other's Solution**
 ```sql
 SELECT DISTINCT CITY FROM STATION WHERE LOWER(SUBSTR(CITY,1,1)) NOT IN ('a','e','i','o','u') OR LOWER(SUBSTR(CITY, LENGTH(CITY),1)) NOT IN ('a','e','i','o','u');   
 ```
@@ -247,7 +259,9 @@ where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 **Solution**
 ```sql
-SELECT DISTINCT CITY FROM STATION WHERE LOWER(SUBSTR(CITY,1,1)) NOT IN ('a','e','i','o','u') AND LOWER(SUBSTR(CITY,LENGTH(CITY),1)) NOT IN ('a','e','i','o','u');    
+SELECT DISTINCT city FROM station
+WHERE UPPER(SUBSTR(city, 1, 1)) NOT IN ('A', 'E', 'I', 'O', 'U')
+AND LOWER(SUBSTR(city,-1)) NOT IN ('a', 'e', 'i', 'o', 'u')
 ```
 
 ###**[Higher Than 75 marks](https://www.hackerrank.com/challenges/more-than-75-marks/problem)**
@@ -264,81 +278,34 @@ The STUDENTS table is described as follows:
 | NAME | STRING   |
 | MARKS  | INTEGER  |
 
-
 The Name column only contains uppercase (A-Z) and lowercase (a-z) letters.
 
 Sample Input
 
 |  ID | NAME | MARKS |
 |---|---|----|
-| 1  | ASHLEY | 81 | 
-| 2 | SAMANTHA   | 75 |
-| 4  | JULIA  |  76 |
-| 3  | JULIA  |  84 |
+| 1  | Ashley| 81 | 
+| 2 | Samantha  | 75 |
+| 4  | Julia  |  76 |
+| 3  | Julia  |  84 |
 
-Sample Output
+**Sample Output**
+>Ashley
+ Julia
+ Belvet
 
-Ashley
-Julia
-Belvet
-
-Explanation
-
+**Explanation**
 Only Ashley, Julia, and Belvet have Marks > 75. If you look at the last three characters of each of their names, there are no duplicates and 'ley' < 'lia' < 'vet'.
 
 **Solution**
 ```sql
-SELECT NAME FROM STUDENTS WHERE MARKS > 75 ORDER BY SUBSTR(NAME, LENGTH(NAME)-2, 3), ID;    
+SELECT name FROM students
+WHERE marks > 75
+ORDER BY RIGHT(name, 3), ID ASC
 ```
-
-###**[Employee Names](https://www.hackerrank.com/challenges/name-of-employees/problem)**
-
-Write a query that prints a list of employee names (i.e.: the name attribute) from the Employee table in alphabetical order.
-
-Input Format
-
-The Employee table containing employee data for a company is described as follows:
-
-|  Column | Type |
-|---|---|
-| employee_id  | INTEGER |
-| name | STRING   |
-| months | INTEGER  |
-| salary | INTEGER |
-
-where employee_id is an employee's ID number, name is their name, months is the total number of months they've been working for the company, and salary is their monthly salary.
-
-Sample Input
-
-|  employee_id | name | marks | salary  |
-|---|---|----|-----|
-| 12228 | Rose | 15 | 1968 |
-| 33645 | Angela   | 1 | 3443 |
-| 45692  | Frank  | 17  | 1608  |
-| 56118  | Patrick  |  7 | 1345
-| 59725 | Lisa | 11 | 2330 |
-| 74197 | Kimberly   | 16 | 4372 |
-| 78454  | Bonnie  |  8 | 1771 |
-| 83565 | Michael |  6 | 2017
-| 98607  | Todd  |  5 | 3396 |
-| 99989 | Joe |  9 | 3573 |
-
-Sample Output
-
-Angela
-Bonnie
-Frank
-Joe
-Kimberly
-Lisa
-Michael
-Patrick
-Rose
-Todd
-
-**Solution**
+**Other's Solution**
 ```sql
-SELECT NAME FROM EMPLOYEE ORDER BY NAME;   
+SELECT NAME FROM STUDENTS WHERE MARKS > 75 ORDER BY SUBSTR(NAME, LENGTH(NAME)-2, 3), ID;    
 ```
 
 ###**[Employee Salaries](https://www.hackerrank.com/challenges/salary-of-employees/problem)**
@@ -390,5 +357,7 @@ We order our output by ascending employee_id.
 
 **Solution**
 ```sql
-SELECT NAME FROM EMPLOYEE WHERE SALARY > 2000  AND MONTHS < 10 ORDER BY EMPLOYEE_ID;  
+SELECT name FROM employee
+WHERE salary > 2000 AND months < 10
+ORDER BY employee_id ASC  
 ```
