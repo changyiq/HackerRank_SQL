@@ -79,8 +79,12 @@ where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 **Solution**
 ```sql
-SELECT DISTINCT(CITY) FROM STATION WHERE CITY LIKE 'A%' OR CITY LIKE 'E%' OR CITY LIKE 'I%' OR CITY LIKE 'O%' 
-OR CITY LIKE 'U%' ORDER BY CITY ASC;       
+SELECT DISTINCT city FROM station 
+WHERE city LIKE 'A%' 
+    OR city LIKE 'E%' 
+    OR city LIKE 'I%' 
+    OR city LIKE 'O%' 
+    OR city LIKE 'U%';      
 ```
 
 ###**[Weather Observation Station 7](https://www.hackerrank.com/challenges/weather-observation-station-7)**
@@ -103,8 +107,12 @@ where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 **Solution**
 ```sql
-SELECT DISTINCT(CITY) FROM STATION WHERE CITY LIKE '%a' OR CITY LIKE '%e' OR CITY LIKE '%i' OR CITY LIKE '%o' 
-OR CITY LIKE '%u';       
+SELECT DISTINCT city FROM station 
+WHERE city LIKE '%a' 
+    OR city LIKE '%e'
+    OR city LIKE '%i'
+    OR city LIKE '%o'
+    OR city LIKE '%u' ;     
 ```
 
 ###**[Weather Observation Station 8](https://www.hackerrank.com/challenges/weather-observation-station-8/problem)**
@@ -127,7 +135,17 @@ where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 **Solution**
 ```sql
-SELECT DISTINCT CITY FROM STATION WHERE (CITY LIKE 'A%' OR CITY LIKE 'E%' OR CITY LIKE 'I%' OR CITY LIKE 'O%' OR CITY LIKE 'U%') AND (CITY LIKE '%a' OR CITY LIKE '%e' OR CITY LIKE '%i' OR CITY LIKE '%o' OR CITY LIKE '%u') order by city;      
+SELECT DISTINCT city FROM station 
+WHERE (city LIKE 'A%' 
+    OR city LIKE 'E%' 
+    OR city LIKE 'I%' 
+    OR city LIKE 'O%' 
+    OR city LIKE 'U%') 
+AND (city LIKE '%a' 
+    OR city LIKE '%e' 
+    OR city LIKE '%i' 
+    OR city LIKE '%o' 
+    OR city LIKE '%u');     
 ```
 
 ###**[Weather Observation Station 9](https://www.hackerrank.com/challenges/weather-observation-station-9/problem)**
@@ -149,6 +167,15 @@ The STATION table is described as follows:
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 **Solution**
+```sql
+SELECT DISTINCT city FROM station 
+WHERE city NOT LIKE 'A%' 
+    AND city NOT LIKE 'E%' 
+    AND city NOT LIKE 'I%' 
+    AND city NOT LIKE 'O%' 
+    AND city NOT LIKE 'U%';
+```
+**others' solution**
 ```sql
 SELECT DISTINCT CITY FROM STATION WHERE upper(SUBSTR(CITY,1,1)) NOT IN ('A','E','I','O','U') AND lower(SUBSTR(CITY,1,1)) NOT IN
 ('a','e','i','o','u');     
