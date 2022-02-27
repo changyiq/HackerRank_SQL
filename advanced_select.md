@@ -1,4 +1,4 @@
-###**[Type of Triangle](https://www.hackerrank.com/challenges/weather-observation-station-4)**
+###**[Type of Triangle](https://www.hackerrank.com/challenges/what-type-of-triangle)**
 
 Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. Output one of the following statements for each record in the table:
 * **Equilateral**: It's a triangle with sides of equal length.
@@ -9,20 +9,21 @@ Write a query identifying the type of each record in the TRIANGLES table using i
 Input Format
 The TRIANGLES table is described as follows:
 
-|  Column | Type |
-|---|---|
-| A  | Integer  |
-| B  | Integer  |
-| C  | Integer  |
+| Column | Type    |
+| ------ | ------- |
+| A      | Integer |
+| B      | Integer |
+| C      | Integer |
 
 Each row in the table denotes the lengths of each of a triangle's three sides.
 
 **Sample Input**
-| A  |  B  |  C  |
-| 20 | 20  |  23 |
-| 20 | 20  |  20 |
-| 20 | 21  |  22 |
-| 13 | 14  |  30 |
+| A   | B   | C   |
+| --- | --- | --- |
+| 20  | 20  | 23  |
+| 20  | 20  | 20  |
+| 20  | 21  | 22  |
+| 13  | 14  | 30  |
 
 **Sample Output**
 > Isosceles<br>
@@ -32,80 +33,195 @@ Each row in the table denotes the lengths of each of a triangle's three sides.
 
 **Explanation**
 
-Values in the tuple(20,20,23) form an Isosceles triangle, because A = B.
-Values in the tuple(20,20,20) form an Equilateral triangle, because A = B = c . 
-Values in the tuple  form a Scalene triangle, because .
-Values in the tuple  cannot form a triangle because the combined value of sides  and  is not larger than that of side .
+Values in the tuple(20,20,23) form an Isosceles triangle, because A = B. <br>
+Values in the tuple(20,20,20) form an Equilateral triangle, because A = B = c . <br>
+Values in the tuple(20,21,22) form a Scalene triangle, because A != B != C.<br>
+Values in the tuple(13, 14, 30) cannot form a triangle because the combined value of sides A and B is not larger than that of side C.<br>
 
 **Solution**
 ```sql
-SELECT COUNT(CITY) - COUNT(DISTINCT CITY) FROM STATION;       
+SELECT 
+CASE
+WHEN A + B <= C OR A + C <= B or B + C <= A THEN "Not A Triangle"
+WHEN A = B AND B = C THEN "Equilateral"
+WHEN A = B OR A = C OR B = C THEN "Isosceles"
+ELSE "Scalene"
+END AS 'triangle_sides'
+FROM TRIANGLES 
 ```
 
-###**[Weather Observation Station 5](https://www.hackerrank.com/challenges/weather-observation-station-5)**
+###**[The PADS](https://www.hackerrank.com/challenges/the-pads)**
 
-Query the two cities in STATION with the shortest and longest CITY names, as well as their respective lengths (i.e.: number of characters in the name). If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
+Generate the following two result sets:
 
-Input Format
+Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format:
+> There are a total of [occupation_count] [occupation]s.
 
-The STATION table is described as follows:
+where [occupation_count] is the number of occurrences of an occupation in OCCUPATIONS and [occupation] is the lowercase occupation name. If more than one Occupation has the same [occupation_count], they should be ordered alphabetically.
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
-| STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+**Note**: There will be at least two entries in the table for each type of occupation.
 
-where LAT_N is the northern latitude and LONG_W is the western longitude.
+**Input Format**
 
-*Sample Input*
+The **OCCUPATIONS** table is described as follows:
 
-Let's say that CITY only has four entries: DEF, ABC, PQRS and WXY
+| Column     | Type   |
+| ---------- | ------ |
+| Name       | String |
+| Occupation | String |
 
-*Sample Output*
+ Occupation will only contain one of the following values: **Doctor**, **Professor**, **Singer** or **Actor**.
 
-ABC 3 
+**Sample Input**
 
-PQRS 4
+| Name      | Occupation |
+| --------- | ---------- |
+| Samatha   | Doctor     |
+| JUlia     | Actor      |
+| Maria     | Actor      |
+| Meera     | Signer     |
+| Ashely    | Professor  |
+| Ketty     | Professor  |
+| Christeen | Professor  |
+| Jane      | Actor      |
+| Jenny     | Doctor     |
+| Priya     | Singer     |
 
-*Explanation*
+**Sample Output**
+> Ashely(P) <br>
+> Christeen(P)<br>
+> Jane(A)<br>
+> Jenny(D)<br>
+> Julia(A)<br>
+> Ketty(P)<br>
+> Maria(A)<br>
+> Meera(S)<br>
+> Priya(S)<br>
+> Samantha(D)<br>
+> There are a total of 2 doctors.<br>
+> There are a total of 2 singers.<br>
+> There are a total of 3 actors.<br>
+> There are a total of 3 professors.<br>
 
-When ordered alphabetically, the CITY names are listed as ABC, DEF, PQRS, and WXY, with the respective lengths 3,3,4,3,3,4, and 33. The longest-named city is obviously PQRS, but there are 33 options for shortest-named city; we choose ABC, because it comes first alphabetically.
+**Explanation**
+
+The results of the first query are formatted to the problem description's specifications.<br>
+The results of the second query are ascendingly ordered first by number of names corresponding to each profession (2<=2<=2<=3<=3), and then alphabetically by profession (doctor<=singer, and actor<=professor).
 
 **Solution**
 ```sql
-select CITY,LENGTH(CITY) from STATION order by Length(CITY) asc, CITY limit 1; 
-select CITY,LENGTH(CITY) from STATION order by Length(CITY) desc, CITY limit 1;      
+SELECT CONCAT(name, "(", SUBSTR(occupation, 1, 1), ")")
+FROM occupations
+ORDER BY name ASC;
+SELECT CONCAT("There are a total of ", COUNT(occupation), " ", LOWER(occupation), "s.") 
+FROM occupations
+GROUP BY occupation
+ORDER BY COUNT(occupation), LOWER(occupation);     
 ```
 
-###**[Weather Observation Station 6](https://www.hackerrank.com/challenges/weather-observation-station-6)**
+###**[Occupations](https://www.hackerrank.com/challenges/occupations/)**
 
-Query the list of CITY names starting with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
+Pivot the Occupation column in OCCUPATIONS so that each Name is sorted alphabetically and displayed underneath its corresponding Occupation. The output column headers should be Doctor, Professor, Singer, and Actor, respectively.
 
-Input Format
+Note: Print **NULL** when there are no more names corresponding to an occupation.
 
-The STATION table is described as follows:
+**Input Format**
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
-| STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+The **OCCUPATIONS** table is described as follows:
 
-where LAT_N is the northern latitude and LONG_W is the western longitude.
+| Column     | Type   |
+| ---------- | ------ |
+| Name       | String |
+| Occupation | String |
 
-**Solution**
+Occupation will only contain one of the following values: **Doctor**, **Professor**, **Singer** or **Actor**.
+
+**Sample Input**
+
+| Name      | Occupation |
+| --------- | ---------- |
+| Samatha   | Doctor     |
+| JUlia     | Actor      |
+| Maria     | Actor      |
+| Meera     | Signer     |
+| Ashely    | Professor  |
+| Ketty     | Professor  |
+| Christeen | Professor  |
+| Jane      | Actor      |
+| Jenny     | Doctor     |
+| Priya     | Singer     |
+
+**Sample Output**
+> Jenny    Ashley     Meera  Jane <br>
+> Samantha Christeen  Priya  Julia <br>
+> NULL     Ketty      NULL   Maria <br>
+
+**Explanation**
+
+The first column is an alphabetically ordered list of Doctor names.<br>
+The second column is an alphabetically ordered list of Professor names.<br>
+The third column is an alphabetically ordered list of Singer names.<br>
+The fourth column is an alphabetically ordered list of Actor names.<br>
+The empty cell data for columns with less than the maximum number of names per occupation (in this case, the Professor and Actor columns) are filled with NULL values.<br>
+
+**SQL Sever Solution** [Tutorial](https://www.techonthenet.com/sql_server/pivot.php)
 ```sql
-SELECT DISTINCT city FROM station 
-WHERE city LIKE 'A%' 
-    OR city LIKE 'E%' 
-    OR city LIKE 'I%' 
-    OR city LIKE 'O%' 
-    OR city LIKE 'U%';      
+SELECT [doctor], [professor], [singer], [actor]
+FROM
+    (SELECT 
+         ROW_NUMBER() OVER (PARTITION BY occupation ORDER BY name) row_num, 
+         name, occupation
+     FROM 
+         Occupations
+    ) AS tmp_table 
+PIVOT
+    (MIN(name) 
+     FOR occupation IN ([doctor], [professor], [singer], [actor])
+    ) AS pivot_table 
+ORDER BY row_num;
+```
+**SQL Server Pivot Syntax**
+```sql
+SELECT <non-pivoted column>,  
+    [first pivoted column] AS <column name>,  
+    [second pivoted column] AS <column name>,  
+    ...  
+    [last pivoted column] AS <column name>  
+FROM  
+    (<SELECT query that produces the data>)   
+    AS <alias for the source query>  
+PIVOT  
+(  
+    <aggregation function>(<column being aggregated>)  
+FOR   
+[<column that contains the values that will become column headers>]   
+    IN ( [first pivoted column], [second pivoted column],  
+    ... [last pivoted column])  
+) AS <alias for the pivot table>  
+<optional ORDER BY clause>;
+```
+
+**MySQL Solution**
+```sql
+SET @doc=0, @prof=0, @singer=0, @actor=0;
+
+SELECT MIN(doc_names), MIN(prof_names), MIN(singer_names), MIN(actor_names)
+FROM(
+    SELECT 
+    CASE
+        WHEN occupation = 'Doctor' THEN (@doc := @doc+1)
+        WHEN occupation = 'Professor' THEN (@prof := @prof+1)
+        WHEN occupation = 'Singer' THEN (@singer := @singer+1)
+        WHEN occupation = 'Actor' THEN (@actor := @actor+1)
+     END AS row_num,
+     CASE WHEN occupation = 'Doctor' THEN name END AS doc_names,
+     CASE WHEN occupation = 'Professor' THEN name END AS prof_names,
+     CASE WHEN occupation = 'Singer' THEN name END AS singer_names,
+     CASE WHEN occupation = 'Actor' THEN name END AS actor_names
+     FROM occupations
+     ORDER BY name) AS tmp_table
+GROUP BY row_num;
 ```
 
 ###**[Weather Observation Station 7](https://www.hackerrank.com/challenges/weather-observation-station-7)**
@@ -116,13 +232,13 @@ Input Format
 
 The STATION table is described as follows:
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
+| Field  | Type         |
+| ------ | ------------ |
+| ID     | NUMBER       |
+| CITY   | VARCHAR2(21) |
 | STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+| LAT_N  | NUMBER       |
+| LONG_W | NUMBER       |
 
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
@@ -144,13 +260,13 @@ Input Format
 
 The STATION table is described as follows:
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
+| Field  | Type         |
+| ------ | ------------ |
+| ID     | NUMBER       |
+| CITY   | VARCHAR2(21) |
 | STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+| LAT_N  | NUMBER       |
+| LONG_W | NUMBER       |
 
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
@@ -177,13 +293,13 @@ Input Format
 
 The STATION table is described as follows:
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
+| Field  | Type         |
+| ------ | ------------ |
+| ID     | NUMBER       |
+| CITY   | VARCHAR2(21) |
 | STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+| LAT_N  | NUMBER       |
+| LONG_W | NUMBER       |
 
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
@@ -210,13 +326,13 @@ Input Format
 
 The STATION table is described as follows:
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
+| Field  | Type         |
+| ------ | ------------ |
+| ID     | NUMBER       |
+| CITY   | VARCHAR2(21) |
 | STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+| LAT_N  | NUMBER       |
+| LONG_W | NUMBER       |
 
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
@@ -239,13 +355,13 @@ Input Format
 
 The STATION table is described as follows:
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
+| Field  | Type         |
+| ------ | ------------ |
+| ID     | NUMBER       |
+| CITY   | VARCHAR2(21) |
 | STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+| LAT_N  | NUMBER       |
+| LONG_W | NUMBER       |
 
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
@@ -268,13 +384,13 @@ Input Format
 
 The STATION table is described as follows:
 
-|  Field | Type |
-|---|---|
-| ID  | NUMBER |
-| CITY | VARCHAR2(21)   |
+| Field  | Type         |
+| ------ | ------------ |
+| ID     | NUMBER       |
+| CITY   | VARCHAR2(21) |
 | STATE  | VARCHAR2(2)  |
-| LAT_N |  NUMBER |
-| LONG_W | NUMBER |
+| LAT_N  | NUMBER       |
+| LONG_W | NUMBER       |
 
 where LAT_N is the northern latitude and LONG_W is the western longitude.
 
@@ -293,22 +409,22 @@ Input Format
 
 The STUDENTS table is described as follows:
 
-|  Column | Type |
-|---|---|
-| ID  | INTEGER |
-| NAME | STRING   |
-| MARKS  | INTEGER  |
+| Column | Type    |
+| ------ | ------- |
+| ID     | INTEGER |
+| NAME   | STRING  |
+| MARKS  | INTEGER |
 
 The Name column only contains uppercase (A-Z) and lowercase (a-z) letters.
 
 Sample Input
 
-|  ID | NAME | MARKS |
-|---|---|----|
-| 1  | Ashley| 81 | 
-| 2 | Samantha  | 75 |
-| 4  | Julia  |  76 |
-| 3  | Julia  |  84 |
+| ID  | NAME     | MARKS |
+| --- | -------- | ----- |
+| 1   | Ashley   | 81    |
+| 2   | Samantha | 75    |
+| 4   | Julia    | 76    |
+| 3   | Julia    | 84    |
 
 **Sample Output**
 >Ashley
@@ -337,29 +453,29 @@ Input Format
 
 The Employee table containing employee data for a company is described as follows:
 
-|  Column | Type |
-|---|---|
-| employee_id  | INTEGER |
-| name | STRING   |
-| months | INTEGER  |
-| salary | INTEGER |
+| Column      | Type    |
+| ----------- | ------- |
+| employee_id | INTEGER |
+| name        | STRING  |
+| months      | INTEGER |
+| salary      | INTEGER |
 
 where employee_id is an employee's ID number, name is their name, months is the total number of months they've been working for the company, and salary is the their monthly salary.
 
 Sample Input
 
-|  employee_id | name | marks | salary  |
-|---|---|----|-----|
-| 12228 | Rose | 15 | 1968 |
-| 33645 | Angela   | 1 | 3443 |
-| 45692  | Frank  | 17  | 1608  |
-| 56118  | Patrick  |  7 | 1345
-| 59725 | Lisa | 11 | 2330 |
-| 74197 | Kimberly   | 16 | 4372 |
-| 78454  | Bonnie  |  8 | 1771 |
-| 83565 | Michael |  6 | 2017
-| 98607  | Todd  |  5 | 3396 |
-| 99989 | Joe |  9 | 3573 |
+| employee_id | name     | marks | salary |
+| ----------- | -------- | ----- | ------ |
+| 12228       | Rose     | 15    | 1968   |
+| 33645       | Angela   | 1     | 3443   |
+| 45692       | Frank    | 17    | 1608   |
+| 56118       | Patrick  | 7     | 1345   |
+| 59725       | Lisa     | 11    | 2330   |
+| 74197       | Kimberly | 16    | 4372   |
+| 78454       | Bonnie   | 8     | 1771   |
+| 83565       | Michael  | 6     | 2017   |
+| 98607       | Todd     | 5     | 3396   |
+| 99989       | Joe      | 9     | 3573   |
 
 Sample Output
 
