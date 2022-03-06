@@ -261,8 +261,8 @@ Write a query to find the node type of Binary Tree ordered by the value of the n
 > 9 Leaf
 
 **Explanation**
-The Binary Tree below illustrates the sample:
-<img src="https://s3.amazonaws.com/hr-challenge-images/12888/1443773633-f9e6fd314e-simply_sql_bst.png" alt="Binary Tree" style="height: 120px; width:250px;"/>
+The Binary Tree below illustrates the sample: <br>
+<img src="https://s3.amazonaws.com/hr-challenge-images/12888/1443773633-f9e6fd314e-simply_sql_bst.png" alt="Binary Tree" style="height: 150px; width:300px;"/>
 
 
 **Solution 1**
@@ -292,7 +292,7 @@ ORDER BY n;
 
 ###**[New Companies](https://www.hackerrank.com/challenges/the-company)**
 
-Amber's conglomerate corporation just acquired some new companies. Each of the companies follows this hierarchy: 
+Amber's conglomerate corporation just acquired some new companies. Each of the companies follows this hierarchy: <br>
 <img src="https://s3.amazonaws.com/hr-challenge-images/19505/1458531031-249df3ae87-ScreenShot2016-03-21at8.59.56AM.png" alt="Hierarchy" style="height: 240px; width:100px;"/>
 
 Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
@@ -347,6 +347,7 @@ The following tables contain company data:
 | company_code        | String |
 
 **Sample Input**
+
 Company Table:
 | company_code | founder  |
 | ------------ | -------- |
@@ -382,10 +383,11 @@ Employee Table:
 | E4            | M3           | SM3                 | LM2          | C2           |
 
 **Sample Output**
-> C1 Monika 1 2 1 2
+> C1 Monika 1 2 1 2<br>
 > C2 Samantha 1 1 2 2
 
 **Explanation**
+
 In company C1, the only lead manager is LM1. There are two senior managers, SM1 and SM2, under LM1. There is one manager, M1, under senior manager SM1. There are two employees, E1 and E2, under manager M1.
 
 In company C2, the only lead manager is LM2. There is one senior manager, SM3, under LM2. There are two managers, M2 and M3, under senior manager SM3. There is one employee, E3, under manager M2, and another employee, E4, under manager, M3.
