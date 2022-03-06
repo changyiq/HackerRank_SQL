@@ -165,7 +165,7 @@ The third column is an alphabetically ordered list of Singer names.<br>
 The fourth column is an alphabetically ordered list of Actor names.<br>
 The empty cell data for columns with less than the maximum number of names per occupation (in this case, the Professor and Actor columns) are filled with NULL values.<br>
 
-**SQL Sever Solution** [Tutorial](https://www.techonthenet.com/sql_server/pivot.php)
+**SQL Sever Solution** 
 ```sql
 SELECT [doctor], [professor], [singer], [actor]
 FROM
@@ -181,7 +181,7 @@ PIVOT
     ) AS pivot_table 
 ORDER BY row_num;
 ```
-**SQL Server Pivot Syntax**
+**SQL Server Pivot Syntax** [Microsoft Docs](https://docs.microsoft.com/en-us/sql/t-sql/queries/from-using-pivot-and-unpivot?view=sql-server-ver15)
 ```sql
 SELECT <non-pivoted column>,  
     [first pivoted column] AS <column name>,  
@@ -224,277 +224,184 @@ FROM(
 GROUP BY row_num;
 ```
 
-###**[Weather Observation Station 7](https://www.hackerrank.com/challenges/weather-observation-station-7)**
+###**[Binary Tree Nodes](https://www.hackerrank.com/challenges/binary-search-tree-1)**
 
-Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
-
-Input Format
-
-The STATION table is described as follows:
-
-| Field  | Type         |
-| ------ | ------------ |
-| ID     | NUMBER       |
-| CITY   | VARCHAR2(21) |
-| STATE  | VARCHAR2(2)  |
-| LAT_N  | NUMBER       |
-| LONG_W | NUMBER       |
-
-where LAT_N is the northern latitude and LONG_W is the western longitude.
-
-**Solution**
-```sql
-SELECT DISTINCT city FROM station 
-WHERE city LIKE '%a' 
-    OR city LIKE '%e'
-    OR city LIKE '%i'
-    OR city LIKE '%o'
-    OR city LIKE '%u' ;     
-```
-
-###**[Weather Observation Station 8](https://www.hackerrank.com/challenges/weather-observation-station-8/problem)**
-
-Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.
-
-Input Format
-
-The STATION table is described as follows:
-
-| Field  | Type         |
-| ------ | ------------ |
-| ID     | NUMBER       |
-| CITY   | VARCHAR2(21) |
-| STATE  | VARCHAR2(2)  |
-| LAT_N  | NUMBER       |
-| LONG_W | NUMBER       |
-
-where LAT_N is the northern latitude and LONG_W is the western longitude.
-
-**Solution**
-```sql
-SELECT DISTINCT city FROM station 
-WHERE (city LIKE 'A%' 
-    OR city LIKE 'E%' 
-    OR city LIKE 'I%' 
-    OR city LIKE 'O%' 
-    OR city LIKE 'U%') 
-AND (city LIKE '%a' 
-    OR city LIKE '%e' 
-    OR city LIKE '%i' 
-    OR city LIKE '%o' 
-    OR city LIKE '%u');     
-```
-
-###**[Weather Observation Station 9](https://www.hackerrank.com/challenges/weather-observation-station-9/problem)**
-
-Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates.
-
-Input Format
-
-The STATION table is described as follows:
-
-| Field  | Type         |
-| ------ | ------------ |
-| ID     | NUMBER       |
-| CITY   | VARCHAR2(21) |
-| STATE  | VARCHAR2(2)  |
-| LAT_N  | NUMBER       |
-| LONG_W | NUMBER       |
-
-where LAT_N is the northern latitude and LONG_W is the western longitude.
-
-**Solution**
-```sql
-SELECT DISTINCT city FROM station 
-WHERE city NOT LIKE 'A%' 
-    AND city NOT LIKE 'E%' 
-    AND city NOT LIKE 'I%' 
-    AND city NOT LIKE 'O%' 
-    AND city NOT LIKE 'U%';
-```
-**others' solution**
-```sql
-SELECT DISTINCT CITY FROM STATION WHERE upper(SUBSTR(CITY,1,1)) NOT IN ('A','E','I','O','U') AND lower(SUBSTR(CITY,1,1)) NOT IN
-('a','e','i','o','u');     
-```
-
-###**[Weather Observation Station 10](https://www.hackerrank.com/challenges/weather-observation-station-10/problem)**
-
-Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
-
-Input Format
-
-The STATION table is described as follows:
-
-| Field  | Type         |
-| ------ | ------------ |
-| ID     | NUMBER       |
-| CITY   | VARCHAR2(21) |
-| STATE  | VARCHAR2(2)  |
-| LAT_N  | NUMBER       |
-| LONG_W | NUMBER       |
-
-where LAT_N is the northern latitude and LONG_W is the western longitude.
-
-**Solution**
-```sql
-SELECT DISTINCT city FROM station
-WHERE SUBSTR(city, LENGTH(city), 1) NOT IN ('a', 'e', 'i', 'o', 'u');
-```
-
-**other's Solution**
-```sql
-SELECT DISTINCT CITY FROM STATION WHERE UPPER(SUBSTR(CITY, LENGTH(CITY), 1)) NOT IN ('A','E','I','O','U') AND LOWER(SUBSTR(CITY, LENGTH(CITY),1)) NOT IN ('a','e','i','o','u');    
-```
-
-###**[Weather Observation Station 11](https://www.hackerrank.com/challenges/weather-observation-station-11/problem)**
-
-Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates.
-
-Input Format
-
-The STATION table is described as follows:
-
-| Field  | Type         |
-| ------ | ------------ |
-| ID     | NUMBER       |
-| CITY   | VARCHAR2(21) |
-| STATE  | VARCHAR2(2)  |
-| LAT_N  | NUMBER       |
-| LONG_W | NUMBER       |
-
-where LAT_N is the northern latitude and LONG_W is the western longitude.
-
-**Solution**
-```sql
-SELECT DISTINCT city FROM station
-WHERE UPPER(SUBSTR(city, 1, 1)) NOT IN ('A', 'E', 'I', 'O', 'U')
-OR LOWER(SUBSTR(city,-1)) NOT IN ('a', 'e', 'i', 'o', 'u');
-```
-**Other's Solution**
-```sql
-SELECT DISTINCT CITY FROM STATION WHERE LOWER(SUBSTR(CITY,1,1)) NOT IN ('a','e','i','o','u') OR LOWER(SUBSTR(CITY, LENGTH(CITY),1)) NOT IN ('a','e','i','o','u');   
-```
-
-###**[Weather Observation Station 12](https://www.hackerrank.com/challenges/weather-observation-station-12/problem)**
-
-Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. Your result cannot contain duplicates.
-
-Input Format
-
-The STATION table is described as follows:
-
-| Field  | Type         |
-| ------ | ------------ |
-| ID     | NUMBER       |
-| CITY   | VARCHAR2(21) |
-| STATE  | VARCHAR2(2)  |
-| LAT_N  | NUMBER       |
-| LONG_W | NUMBER       |
-
-where LAT_N is the northern latitude and LONG_W is the western longitude.
-
-**Solution**
-```sql
-SELECT DISTINCT city FROM station
-WHERE UPPER(SUBSTR(city, 1, 1)) NOT IN ('A', 'E', 'I', 'O', 'U')
-AND LOWER(SUBSTR(city,-1)) NOT IN ('a', 'e', 'i', 'o', 'u')
-```
-
-###**[Higher Than 75 marks](https://www.hackerrank.com/challenges/more-than-75-marks/problem)**
-
-Query the Name of any student in STUDENTS who scored higher than 75 Marks. Order your output by the last three characters of each name. If two or more students both have names ending in the same last three characters (i.e.: Bobby, Robby, etc.), secondary sort them by ascending ID.
-
-Input Format
-
-The STUDENTS table is described as follows:
-
+You are given a table, BST, containing two columns: N and P, where N represents the value of a node in Binary Tree, and P is the parent of N.
 | Column | Type    |
 | ------ | ------- |
-| ID     | INTEGER |
-| NAME   | STRING  |
-| MARKS  | INTEGER |
+| N      | Integer |
+| P      | Integer |
 
-The Name column only contains uppercase (A-Z) and lowercase (a-z) letters.
+Write a query to find the node type of Binary Tree ordered by the value of the node. Output one of the following for each node:
 
-Sample Input
+- Root: If node is root node.
+- Leaf: If node is leaf node.
+- Inner: If node is neither root nor leaf node.
 
-| ID  | NAME     | MARKS |
-| --- | -------- | ----- |
-| 1   | Ashley   | 81    |
-| 2   | Samantha | 75    |
-| 4   | Julia    | 76    |
-| 3   | Julia    | 84    |
+**Sample Input**
+
+| N   | P    |
+| --- | ---- |
+| 1   | 2    |
+| 3   | 2    |
+| 6   | 8    |
+| 9   | 8    |
+| 2   | 5    |
+| 8   | 5    |
+| 5   | null |
 
 **Sample Output**
->Ashley
- Julia
- Belvet
+
+> 1 Leaf
+> 2 Inner
+> 3 Leaf
+> 5 Root
+> 6 Leaf
+> 8 Inner
+> 9 Leaf
 
 **Explanation**
-Only Ashley, Julia, and Belvet have Marks > 75. If you look at the last three characters of each of their names, there are no duplicates and 'ley' < 'lia' < 'vet'.
+The Binary Tree below illustrates the sample:
+<img src="https://s3.amazonaws.com/hr-challenge-images/12888/1443773633-f9e6fd314e-simply_sql_bst.png" alt="Binary Tree" style="height: 120px; width:250px;"/>
+
+
+**Solution 1**
+```sql
+SELECT b.n,
+CASE 
+    WHEN b.p is not null THEN 
+        CASE 
+            WHEN (SELECT COUNT(*) FROM bst WHERE p = b.n) = 0
+            THEN 'Leaf' 
+            ELSE 'Inner'
+        END
+    ELSE 'Root'
+END
+FROM bst b
+ORDER BY b.n   
+```
+
+**Solution 2**
+```sql
+SELECT n, 
+IF(p IS NULL,"Root",
+   IF((SELECT COUNT(*) FROM bst WHERE p = b.n )>0, "Inner", "Leaf")) 
+FROM bst AS b 
+ORDER BY n;
+```
+
+###**[New Companies](https://www.hackerrank.com/challenges/the-company)**
+
+Amber's conglomerate corporation just acquired some new companies. Each of the companies follows this hierarchy: 
+<img src="https://s3.amazonaws.com/hr-challenge-images/19505/1458531031-249df3ae87-ScreenShot2016-03-21at8.59.56AM.png" alt="Hierarchy" style="height: 240px; width:100px;"/>
+
+Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
+
+Note:
+- The tables may contain duplicate records.
+- The company_code is string, so the sorting should not be numeric. For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+
+**Input Format**
+
+The following tables contain company data:
+
+- Company: The company_code is the code of the company and founder is the founder of the company.
+
+| Column       | Type   |
+| ------------ | ------ |
+| company_code | String |
+| founder      | String |
+
+- Lead_Manager: The lead_manager_code is the code of the lead manager, and the company_code is the code of the working company.
+
+| Column            | Type   |
+| ----------------- | ------ |
+| lead_manager_code | String |
+| company_code      | String |
+
+- Senior_Manager: The senior_manager_code is the code of the senior manager, the lead_manager_code is the code of its lead manager, and the company_code is the code of the working company.
+
+| Column              | Type   |
+| ------------------- | ------ |
+| senior_manager_code | String |
+| lead_manager_code   | String |
+| company_code        | String |
+
+- Manager: The manager_code is the code of the manager, the senior_manager_code is the code of its senior manager, the lead_manager_code is the code of its lead manager, and the company_code is the code of the working company.
+  
+| Column              | Type   |
+| ------------------- | ------ |
+| manager_code        | String |
+| senior_manager_code | String |
+| lead_manager_code   | String |
+| company_code        | String |
+
+- Employee: The employee_code is the code of the employee, the manager_code is the code of its manager, the senior_manager_code is the code of its senior manager, the lead_manager_code is the code of its lead manager, and the company_code is the code of the working company.
+  
+| Column              | Type   |
+| ------------------- | ------ |
+| employee_code       | String |
+| manager_code        | String |
+| senior_manager_code | String |
+| lead_manager_code   | String |
+| company_code        | String |
+
+**Sample Input**
+Company Table:
+| company_code | founder  |
+| ------------ | -------- |
+| C1           | Monika   |
+| C2           | Samantha |
+
+Lead_Manager Table:
+| lead_manager_code | company_code |
+| ----------------- | ------------ |
+| LM1               | C1           |
+| LM2               | C2           |
+
+Senior_Manager Table:
+| senior_manager_code | lead_manager | company_code |
+| ------------------- | ------------ | ------------ |
+| SM1                 | LM1          | C1           |
+| SM2                 | LM1          | C1           |
+| SM3                 | LM2          | C2           |
+
+Manager Table:
+| manager_code | senior_manager_code | lead_manager | company_code |
+| ------------ | ------------------- | ------------ | ------------ |
+| M1           | SM1                 | LM1          | C1           |
+| M2           | SM3                 | LM2          | C2           |
+| M3           | SM3                 | LM2          | C2           |
+
+Employee Table:
+| employee_code | manager_code | senior_manager_code | lead_manager | company_code |
+| ------------- | ------------ | ------------------- | ------------ | ------------ |
+| E1            | M1           | SM1                 | LM1          | C1           |
+| E2            | M1           | SM1                 | LM1          | C1           |
+| E3            | M2           | SM3                 | LM2          | C2           |
+| E4            | M3           | SM3                 | LM2          | C2           |
+
+**Sample Output**
+> C1 Monika 1 2 1 2
+> C2 Samantha 1 1 2 2
+
+**Explanation**
+In company C1, the only lead manager is LM1. There are two senior managers, SM1 and SM2, under LM1. There is one manager, M1, under senior manager SM1. There are two employees, E1 and E2, under manager M1.
+
+In company C2, the only lead manager is LM2. There is one senior manager, SM3, under LM2. There are two managers, M2 and M3, under senior manager SM3. There is one employee, E3, under manager M2, and another employee, E4, under manager, M3.
 
 **Solution**
 ```sql
-SELECT name FROM students
-WHERE marks > 75
-ORDER BY RIGHT(name, 3), ID ASC
-```
-**Other's Solution**
-```sql
-SELECT NAME FROM STUDENTS WHERE MARKS > 75 ORDER BY SUBSTR(NAME, LENGTH(NAME)-2, 3), ID;    
-```
-
-###**[Employee Salaries](https://www.hackerrank.com/challenges/salary-of-employees/problem)**
-
-Write a query that prints a list of employee names (i.e.: the name attribute) for employees in Employee having a salary greater than $2000 per month who have been employees for less than 10 months. Sort your result by ascending employee_id.
-
-Input Format
-
-The Employee table containing employee data for a company is described as follows:
-
-| Column      | Type    |
-| ----------- | ------- |
-| employee_id | INTEGER |
-| name        | STRING  |
-| months      | INTEGER |
-| salary      | INTEGER |
-
-where employee_id is an employee's ID number, name is their name, months is the total number of months they've been working for the company, and salary is the their monthly salary.
-
-Sample Input
-
-| employee_id | name     | marks | salary |
-| ----------- | -------- | ----- | ------ |
-| 12228       | Rose     | 15    | 1968   |
-| 33645       | Angela   | 1     | 3443   |
-| 45692       | Frank    | 17    | 1608   |
-| 56118       | Patrick  | 7     | 1345   |
-| 59725       | Lisa     | 11    | 2330   |
-| 74197       | Kimberly | 16    | 4372   |
-| 78454       | Bonnie   | 8     | 1771   |
-| 83565       | Michael  | 6     | 2017   |
-| 98607       | Todd     | 5     | 3396   |
-| 99989       | Joe      | 9     | 3573   |
-
-Sample Output
-
-Angela
-Michael
-Todd
-Joe
-
-Explanation
-
-Angela has been an employee for 1 month and earns $3443 per month.
-Michael has been an employee for 6 months and earns $2017 per month.
-Todd has been an employee for 5 months and earns $3396 per month.
-Joe has been an employee for 9 months and earns $3573 per month.
-We order our output by ascending employee_id.
-
-**Solution**
-```sql
-SELECT name FROM employee
-WHERE salary > 2000 AND months < 10
-ORDER BY employee_id ASC  
+SELECT c.company_code, c.founder, 
+    COUNT(DISTINCT lm.lead_manager_code),
+    COUNT(DISTINCT sm.senior_manager_code),
+    COUNT(DISTINCT m.manager_code),
+    COUNT(DISTINCT e.employee_code)
+FROM Company c, Lead_manager lm, Senior_Manager sm, Manager m, Employee e
+WHERE c.company_code = lm.company_code 
+    AND lm.lead_manager_code = sm.lead_manager_code
+    AND sm.senior_manager_code = m.senior_manager_code
+    AND m.manager_code = e.manager_code
+GROUP BY c.company_code, c.founder
+ORDER BY c.company_code 
 ```
